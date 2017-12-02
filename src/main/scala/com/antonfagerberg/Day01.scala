@@ -9,12 +9,11 @@ object Day01 extends App {
       .sum
   }
 
-  def part1(input: String): Int = captcha(1)(input)
-
-  def part2(input: String): Int = captcha(input.length / 2)(input)
+  val part1: String => Int = captcha(1)
+  val part2: String => Int = captcha(input.length / 2)
 
   private lazy val input = Input.getLines("day01/input").mkString
 
-  println("Part 1:" + part1(input))
-  println("Part 2:" + part2(input))
+  println("Part 1: " + part1(input))
+  println("Part 2: " + part2(input))
 }
