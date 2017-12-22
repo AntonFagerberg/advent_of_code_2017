@@ -1,6 +1,8 @@
 package com.antonfagerberg
 
-object Day02 extends App {
+import com.antonfagerberg.Day02.{part1, part2}
+
+object Day02 {
   def checksum1(input: List[List[Int]]): Int = {
     input.foldLeft(0) { (acc, row) =>
       acc + (row.max - row.min)
@@ -27,7 +29,9 @@ object Day02 extends App {
 
   val part1: List[String] => Int = (Day02.parse _).andThen(Day02.checksum1)
   val part2: List[String] => Int = (Day02.parse _).andThen(Day02.checksum2)
+}
 
+object Day02Solution extends App {
   private lazy val input = Input.getLines("day02/input")
 
   println("Part 1: " + part1(input))
