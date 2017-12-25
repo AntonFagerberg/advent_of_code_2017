@@ -4,8 +4,7 @@ import scala.annotation.tailrec
 import scala.collection.mutable
 
 object Day06 {
-  @tailrec
-  private def redistribute(banks: mutable.ArrayBuffer[Int], history: mutable.Set[List[Int]] = mutable.Set.empty, redistributionCount: Int = 0): Int = {
+  private def mutateBanks(banks: mutable.ArrayBuffer[Int]): Unit = {
     val (maxValue, maxIndex) =
       banks.zipWithIndex.reduce[(Int, Int)] { case ((value1, index1), (value2, index2)) =>
         if (value2 > value1) {
@@ -28,6 +27,11 @@ object Day06 {
     (1 to additionalBumps).foreach { offset =>
       banks((maxIndex + offset) % bankSize) += 1
     }
+  }
+
+  @tailrec
+  private def redistribute(banks: mutable.ArrayBuffer[Int], history: mutable.Set[List[Int]] = mutable.Set.empty, redistributionCount: Int = 0): Int = {
+    mutateBanks(banks)
 
     val immutableBanks = banks.toList
 
@@ -40,28 +44,7 @@ object Day06 {
 
   @tailrec
   private def redistributeLoop(banks: mutable.ArrayBuffer[Int], history: mutable.HashMap[List[Int], Int] = mutable.HashMap.empty, redistributionCount: Int = 0): Int = {
-    val (maxValue, maxIndex) =
-      banks.zipWithIndex.reduce[(Int, Int)] { case ((value1, index1), (value2, index2)) =>
-        if (value2 > value1) {
-          (value2, index2)
-        } else {
-          (value1, index1)
-        }
-      }
-
-    val bankSize = banks.size
-
-    val fullCycles = maxValue / bankSize
-    val additionalBumps = maxValue % bankSize
-
-
-    banks(maxIndex) = 0
-
-    banks.indices.foreach(banks(_) += fullCycles)
-
-    (1 to additionalBumps).foreach { offset =>
-      banks((maxIndex + offset) % bankSize) += 1
-    }
+    mutateBanks(banks)
 
     val immutableBanks = banks.toList
 
